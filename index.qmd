@@ -1,11 +1,17 @@
 ---
 title: "ColeParra06.github.io"
+image: media/IMG_6168.jpeg
+toc: false
+about: 
+  template: jolla
+  image-shape: round
+  image-width: 17em
+  links:
+    - text: GitHub
+      href: https://github.com/ColeParra06
+      target: _blank
+    - text: Email
+      href: Cjpw2025@mymail.pomona.edu
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+Hi, I'm Cole Parra! I am a Student-Athlete at Pomona College in Claremont, California. I am very interested in Data Science and how you can apply it in a number of different fields. I love playing and watching sports, playing video games, and spending time with my friends and family. Check out my website to see some of the Data Science projects I've been working on!
