@@ -7,6 +7,13 @@
     "text": "."
   },
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ColeParra06.github.io",
@@ -14,10 +21,59 @@
     "text": "Hi, I’m Cole Parra! I am a Student-Athlete at Pomona College in Claremont, California. I am very interested in Data Science and how you can apply it in a number of different fields. I love playing and watching sports, playing video games, and spending time with my friends and family. Check out my website to see some of the Data Science projects I’ve been working on!"
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "chess_ratings.html",
+    "href": "chess_ratings.html",
+    "title": "Chess Ratings",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "The International Chess Federation, FIDE, releases the ratings for chess players each month. The highest title a chess player can earn is Grandmaster. This Tidy Tuesday analysis uses the ratings from September 2025. My analysis will see which countries have the most Grandmasters."
+  },
+  {
+    "objectID": "chess_ratings.html#introduction",
+    "href": "chess_ratings.html#introduction",
+    "title": "Chess Ratings",
+    "section": "",
+    "text": "The International Chess Federation, FIDE, releases the ratings for chess players each month. The highest title a chess player can earn is Grandmaster. This Tidy Tuesday analysis uses the ratings from September 2025. My analysis will see which countries have the most Grandmasters."
+  },
+  {
+    "objectID": "chess_ratings.html#analysis",
+    "href": "chess_ratings.html#analysis",
+    "title": "Chess Ratings",
+    "section": "Analysis",
+    "text": "Analysis\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nfide_ratings_september &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-09-23/fide_ratings_september.csv')\n\nRows: 203191 Columns: 12\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr (7): name, fed, sex, title, wtitle, otitle, foa\ndbl (5): id, rating, games, k, bday\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\nfide_ratings_september |&gt;\n  filter(title == \"GM\") |&gt;\n  count(fed, sort = TRUE) |&gt;\n  slice_head(n = 10) |&gt;\n  ggplot(aes(x = n, y = fct_reorder(fed, n))) + \n  geom_col() + \n  geom_text(aes(label = n), hjust = 1.3) +\n  labs(\n    x = \"# of Grandmasters\",\n    y = \"Country\",\n    title = \"Countries with most Grandmasters\"\n  )\n\n\n\n\n\n\n\n\nGermany, the USA, and India are the countries with the most chess Grandmasters, having 77, 75, and 67, respectively. After the top 4 countries, which includes those named and Russia, there is a fairly steep drop off from 63 to 51 Grandmasters, which is Ukraine. Out of the top 10, there are 7 European countries, with the USA, India, and Israel being the only non-European countries. Numbers 5-10 are relatively close together, with each country only having a couple less Grandmasters then the one before it."
+  },
+  {
+    "objectID": "chess_ratings.html#sources",
+    "href": "chess_ratings.html#sources",
+    "title": "Chess Ratings",
+    "section": "Sources",
+    "text": "Sources\nData from [TidyTuesday, September 23, 2025](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-23/readme.md), curated by Jessica Moore.\nOriginal source: FIDE (International Chess Federation). (2025). *Standard Rating List, September 2025*. https://ratings.fide.com/download_lists.phtml"
+  },
+  {
+    "objectID": "ufc_fights.html",
+    "href": "ufc_fights.html",
+    "title": "UFC Fights",
+    "section": "",
+    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
+  },
+  {
+    "objectID": "ufc_fights.html#introduction",
+    "href": "ufc_fights.html#introduction",
+    "title": "UFC Fights",
+    "section": "",
+    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
+  },
+  {
+    "objectID": "ufc_fights.html#analysis",
+    "href": "ufc_fights.html#analysis",
+    "title": "UFC Fights",
+    "section": "Analysis",
+    "text": "Analysis\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nufc_fights &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-07-07/ufc_fights.csv')\n\nRows: 8736 Columns: 15\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (13): fight_url, event_name, location, f1_name, f1_result, f2_name, f2_...\ndbl   (1): round\ndate  (1): date\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\nfinish_by_year &lt;- ufc_fights |&gt;\n  mutate(\n    year = year(date),\n    finish = if_else(str_detect(method, \"KO\"), \"KO/TKO\",\n             if_else(str_detect(method, \"Submission\"), \"Submission\",\n             if_else(str_detect(method, \"Decision\"), \"Decision\",\n                     \"Other\")))\n  ) |&gt;\n  count(year, finish) |&gt;\n  group_by(year) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  ungroup()\n\n\nfinish_by_year |&gt;\n  ggplot(aes(x = year, y = prop, color = finish)) + \n  geom_line(linewidth = 0.67) +\n  geom_point() + \n  labs(\n    x = \"Year\",\n    y = \"Proportion of fights\",\n    color = \"Method\",\n    title = \"Method of UFC fight finishes over time\"\n  )\n\n\n\n\n\n\n\n\nIn the first years of the UFC, decisions were very rare, and most fights ended by a KO/TKO or a submission. In the very initial years submissions were by far the most common method of finish. As the UFC heads into the late 1990s and the 2000s, you can see a clear trend of more and more fights ending in decision. All methods of finishes besides those labeled other fluctuate heavily by year throughout the 2000s, but the overall trend shows an increase in decisions and a decrease in KO/TKOS. Once you reach 2010, the trend of method of finishes become much more stable around the proportions that we have today, which is around half of fights ending in a decision, around 32% ending in a KO or TKO, and around 18% ending in submission. Throughout all years of the UFC fights ending in “other” ways, like disqualifications and no contests have remained incredibly rare, at a rate of around 1%."
+  },
+  {
+    "objectID": "ufc_fights.html#sources",
+    "href": "ufc_fights.html#sources",
+    "title": "UFC Fights",
+    "section": "Sources",
+    "text": "Sources\nData from [TidyTuesday, July 7, 2026](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md), curated by Benjamin Smith.\nOriginal source: Smith, B. *fightr: UFC Fight and Athlete Data* (R package). https://github.com/benyamindsmith/fightr. The package compiles data from [UFCStats](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API."
   }
 ]
