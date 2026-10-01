@@ -9,6 +9,13 @@ website:
       - href: index.qmd
         text: Home
       - about.qmd
+      - resources.qmd
+      - text: "Data Viz"
+        menu:
+          - text: "UFC Fights"
+            href: ufc_fights.qmd
+          - text: "Chess Ratings"
+            href: chess_ratings.qmd
 
 format:
   html:
@@ -17,6 +24,7 @@ format:
       - brand
     css: styles.css
     toc: true
+    page-layout: full
 
 editor: visual
 

@@ -1,0 +1,62 @@
+---
+title: "UFC Fights"
+description: |
+  Analysis of UFC Fight data
+author: Cole Parra
+date: September 29, 2026
+format: html
+excecute: 
+  message: false
+  warning: false
+---
+
+## Introduction
+
+The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges' decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time.
+
+## Analysis
+
+```{r}
+library(tidyverse)
+
+ufc_fights <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-07-07/ufc_fights.csv')
+```
+
+```{r}
+finish_by_year <- ufc_fights |>
+  mutate(
+    year = year(date),
+    finish = if_else(str_detect(method, "KO"), "KO/TKO",
+             if_else(str_detect(method, "Submission"), "Submission",
+             if_else(str_detect(method, "Decision"), "Decision",
+                     "Other")))
+  ) |>
+  count(year, finish) |>
+  group_by(year) |>
+  mutate(prop = n / sum(n)) |>
+  ungroup()
+```
+
+```{r}
+finish_by_year |>
+  ggplot(aes(x = year, y = prop, color = finish)) + 
+  geom_line(linewidth = 0.67) +
+  geom_point() + 
+  labs(
+    x = "Year",
+    y = "Proportion of fights",
+    color = "Method",
+    title = "Method of UFC fight finishes over time"
+  )
+```
+
+In the first years of the UFC, decisions were very rare, and most fights ended by a KO/TKO or a submission. In the very initial years submissions were by far the most common method of finish. As the UFC heads into the late 1990s and the 2000s, you can see a clear trend of more and more fights ending in decision. All methods of finishes besides those labeled other fluctuate heavily by year throughout the 2000s, but the overall trend shows an increase in decisions and a decrease in KO/TKOS. Once you reach 2010, the trend of method of finishes become much more stable around the proportions that we have today, which is around half of fights ending in a decision, around 32% ending in a KO or TKO, and around 18% ending in submission. Throughout all years of the UFC fights ending in "other" ways, like disqualifications and no contests have remained incredibly rare, at a rate of around 1%.
+
+## Sources
+
+Data from \[TidyTuesday, July 7, 2026\](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md),
+curated by Benjamin Smith.
+
+Original source: Smith, B. \*fightr: UFC Fight and Athlete Data\* (R package).
+https://github.com/benyamindsmith/fightr. The package compiles data from
+\[UFCStats\](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API.
