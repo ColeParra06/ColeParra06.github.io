@@ -75,5 +75,33 @@
     "title": "UFC Fights",
     "section": "Sources",
     "text": "Sources\nData from [TidyTuesday, July 7, 2026](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md), curated by Benjamin Smith.\nOriginal source: Smith, B. *fightr: UFC Fight and Athlete Data* (R package). https://github.com/benyamindsmith/fightr. The package compiles data from [UFCStats](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API."
+  },
+  {
+    "objectID": "billboard.html",
+    "href": "billboard.html",
+    "title": "Billboard Hot 100",
+    "section": "",
+    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
+  },
+  {
+    "objectID": "billboard.html#introduction",
+    "href": "billboard.html#introduction",
+    "title": "Billboard Hot 100",
+    "section": "",
+    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
+  },
+  {
+    "objectID": "billboard.html#analysis",
+    "href": "billboard.html#analysis",
+    "title": "Billboard Hot 100",
+    "section": "Analysis",
+    "text": "Analysis\n\n\nCode\nlibrary(tidyverse)\n\nbillboard &lt;- read_csv(\"data/billboard.csv\")\n\n\n\n\nCode\nsongs &lt;- billboard |&gt;\n  filter(weeks_on_chart == 1) |&gt;\n  mutate(\n    year = year(mdy(week_id)),\n    decade = str_c(str_sub(year, 1, 3), \"0s\")\n  )\n\n\n\nHow songs are collaborated on over time\n\n\nCode\nsongs &lt;- songs |&gt;\n  mutate(\n    collaboration = str_detect(performer, \"Featuring|Feat\\\\.|&| x | With |Duet\")\n  )\n\nsongs |&gt;\n  group_by(year) |&gt;\n  summarize(prop_collab = mean(collaboration)) |&gt;\n  ggplot(aes(x = year, y = prop_collab)) + \n  geom_line(linewidth = 0.67) +\n  labs(\n    x = \"Year song first charted\",\n    y = \"Proportion of songs\",\n    title = \"Proportion of Hot 100 songs with multiple artists\"\n  )\n\n\n\n\n\n\n\n\n\nSongs that have been collaborated on, which include songs that have someone featured or have multiple artists credited, have greatly increased since the Billboard Hot 100 was introduced in 1958. There was a little jump up to about 16% of songs in the late 1960s, but else wise the proportion stayed very low until the mid 1990s. Around 1995, the collaboration rate in the Hot 100 started rapidly increasing to where we were in 2021, which is around 37%.\n\n\nSongs that start with “I” vs “You”\n\n\nCode\nsongs |&gt;\n  mutate(first_word = str_extract(song, \"^(I|You)(?=\\\\s|')\")) |&gt;\n  count(decade, first_word) |&gt;\n  group_by(decade) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  filter(!is.na(first_word)) |&gt;\n  mutate(first_word = fct_relevel(first_word, \"I\", \"You\")) |&gt;\n  ggplot(aes(x = decade, y = prop, fill = first_word)) + \n  geom_col(position = \"dodge\") + \n  labs(\n    x = \"Decade song first charted\",\n    y = \"Proportion of songs\",\n    fill = \"Title starts with\",\n    title = \"Proportions of Hot 100 songs that start with I vs You\"\n  )\n\n\n\n\n\n\n\n\n\nThe two most popular ways song titles start is with “I” and “You”. This plot, which includes songs that have an I or You followed by an ’, like I’m and You’re, shows how more songs have started with “I” in every decade throughout history. The difference was highest in the 1960s, where around 7.5% percent of songs started with “I” and only around 2.5% of songs started with “You”. Since the 1990s, the amount of songs on the Hot 100 starting with either word has starkly decreased, with “I” being more than 3 times less common, and “You” being half as common.\n\n\nHow song title length has changed over time\n\n\nCode\nsongs |&gt;\n  mutate(num_words = str_count(song, \"\\\\S+\")) |&gt;\n  group_by(year) |&gt;\n  summarize(avg_words = mean(num_words)) |&gt;\n  ggplot(aes(x = year, y = avg_words)) + \n  geom_line(linewidth = 0.67) + \n  labs(\n    x = \"Year song first charted\",\n    y = \"Average # of words in the title\",\n    title = \"Average # of words in Hot 100 song titles\"\n  )\n\n\n\n\n\n\n\n\n\nThe amount of words per song title in the Hot 100 has decreased severely since 1970. From its’ creation, the average length increases until it reaches around 4.1 words per title in 1970, where it pretty steadily decreases besides a surge up in the late 1990s. After that though, it continues to decrease to where we are today, at less then 2.5 words per title."
+  },
+  {
+    "objectID": "billboard.html#sources",
+    "href": "billboard.html#sources",
+    "title": "Billboard Hot 100",
+    "section": "Sources",
+    "text": "Sources\nData from [TidyTuesday, September 14, 2021](https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-09-14).\nOriginal source: Miller, S. (2021). *Billboard Hot 100 1958-Present*. Data.World. https://data.world/kcmillersean/billboard-hot-100-1958-2017. Data scraped from the weekly Hot 100 charts on Billboard.com."
   }
 ]
