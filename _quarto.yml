@@ -3,19 +3,19 @@ project:
   output-dir: docs
 
 website:
-  title: "ColeParra06.github.io"
+  title: "Cole Parra website"
   navbar:
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
-      - resources.qmd
       - text: "Data Viz"
         menu:
           - text: "UFC Fights"
             href: ufc_fights.qmd
           - text: "Chess Ratings"
             href: chess_ratings.qmd
+          - text: "Hot 100 songs"
+            href: billboard.qmd
 
 format:
   html:
