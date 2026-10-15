@@ -42,8 +42,6 @@ Germany, the USA, and India are the countries with the most chess Grandmasters, 
 
 ## Sources
 
-Data from \[TidyTuesday, September 23, 2025\](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-23/readme.md),
-curated by Jessica Moore.
+Data from \[TidyTuesday, September 23, 2025\](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-23/readme.md), curated by Jessica Moore.
 
-Original source: FIDE (International Chess Federation). (2025). \*Standard
-Rating List, September 2025\*. https://ratings.fide.com/download_lists.phtml
+Original source: FIDE (International Chess Federation). (2025). \*Standard Rating List, September 2025\*. https://ratings.fide.com/download_lists.phtml

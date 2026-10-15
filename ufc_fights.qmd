@@ -54,9 +54,6 @@ In the first years of the UFC, decisions were very rare, and most fights ended b
 
 ## Sources
 
-Data from \[TidyTuesday, July 7, 2026\](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md),
-curated by Benjamin Smith.
+Data from \[TidyTuesday, July 7, 2026\](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md), curated by Benjamin Smith.
 
-Original source: Smith, B. \*fightr: UFC Fight and Athlete Data\* (R package).
-https://github.com/benyamindsmith/fightr. The package compiles data from
-\[UFCStats\](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API.
+Original source: Smith, B. \*fightr: UFC Fight and Athlete Data\* (R package). https://github.com/benyamindsmith/fightr. The package compiles data from \[UFCStats\](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API.
