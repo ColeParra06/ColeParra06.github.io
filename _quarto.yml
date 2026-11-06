@@ -16,6 +16,8 @@ website:
             href: chess_ratings.qmd
           - text: "Hot 100 songs"
             href: billboard.qmd
+          - text: "Simulating Playoff Series"
+            href: simulating_playoff_series.qmd
 
 format:
   html:
