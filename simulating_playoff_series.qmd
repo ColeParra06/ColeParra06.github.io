@@ -6,7 +6,7 @@ execute:
   message: false
 format:
   html:
-  code-fold: true
+    code-fold: true
 ---
 
 ## Introduction

@@ -103,5 +103,47 @@
     "title": "Billboard Hot 100",
     "section": "Sources",
     "text": "Sources\nData from [TidyTuesday, September 14, 2021](https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-09-14).\nOriginal source: Miller, S. (2021). *Billboard Hot 100 1958-Present*. Data.World. https://data.world/kcmillersean/billboard-hot-100-1958-2017. Data scraped from the weekly Hot 100 charts on Billboard.com."
+  },
+  {
+    "objectID": "simulating_playoff_series.html",
+    "href": "simulating_playoff_series.html",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "",
+    "text": "In this project, I will simulate playoff series between two teams and see how sensitive the outcome is to how favored a team is, how long the series is, and home-field advantage. I will write a function that plays out a series game by game, with the games decided by Team A’s win probability. I will use map() variants to run the series thousands of times across different values in the parameters. At the end I will show how often Team A wins based on the different parameters.\n\n\nCode\nlibrary(tidyverse)\nset.seed(4747)"
+  },
+  {
+    "objectID": "simulating_playoff_series.html#introduction",
+    "href": "simulating_playoff_series.html#introduction",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "",
+    "text": "In this project, I will simulate playoff series between two teams and see how sensitive the outcome is to how favored a team is, how long the series is, and home-field advantage. I will write a function that plays out a series game by game, with the games decided by Team A’s win probability. I will use map() variants to run the series thousands of times across different values in the parameters. At the end I will show how often Team A wins based on the different parameters.\n\n\nCode\nlibrary(tidyverse)\nset.seed(4747)"
+  },
+  {
+    "objectID": "simulating_playoff_series.html#the-model",
+    "href": "simulating_playoff_series.html#the-model",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "The model",
+    "text": "The model\nTeam A will be the higher seed (ranking) in the series. Having home-field advantage (hfa) will increase “p”, the chance of winning the game, and being away from home will lower it by the same amount. The home schedule will follow this format:\nBest of 1: Team A at home\nBest of 3: home, away, home\nBest of 5: home, home, away, away, home\nBest of 7: home, home, away, away, home, away, home\nplay_series() will play one game at a time until a team has won the majority, and returns ‘TRUE’ if team A won.\n\n\nCode\nhome_schedule &lt;- list(\n  '1' = c(TRUE),\n  '3' = c(TRUE, FALSE, TRUE),\n  '5' = c(TRUE, TRUE, FALSE, FALSE, TRUE),\n  '7' = c(TRUE, TRUE, FALSE, FALSE, TRUE, FALSE, TRUE)\n)\n\nplay_series &lt;- function(p, games = 7, hfa = 0) {\n  home &lt;- home_schedule[[as.character(games)]]\n  needed &lt;- (games + 1) / 2\n  wins_a &lt;- 0\n  wins_b &lt;- 0\n  g &lt;- 0\n  while (wins_a &lt; needed & wins_b &lt; needed) {\n    g &lt;- g + 1\n    if (home[g]) {\n      p_game &lt;- p + hfa\n    } else {\n      p_game &lt;- p - hfa\n    }\n    if (runif(1) &lt; p_game) {\n      wins_a &lt;- wins_a + 1\n    } else {\n      wins_b &lt;- wins_b + 1\n    }\n  }\n  return(wins_a == needed)\n}\n\n\nA series is random, so to estimate the probability that Team A wins, the function win_prob() uses map_lgl() to play the series 2000 times and returns the prop. that Team A won.\n\n\nCode\nwin_prob &lt;- function(p, games, hfa = 0, reps = 2000) {\n  map_lgl(1:reps, \\(i) play_series(p, games, hfa)) |&gt; mean()\n}"
+  },
+  {
+    "objectID": "simulating_playoff_series.html#how-series-length-changes-the-outcome",
+    "href": "simulating_playoff_series.html#how-series-length-changes-the-outcome",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "How series length changes the outcome",
+    "text": "How series length changes the outcome\nI will turn off hfa and vary Team A’s p from 0.3 to 0.7 for each series length, and using map2_dbl(), run the simulation with every combination.\n\n\nCode\np_values &lt;- seq(0.3, 0.7, by = 0.05)\ngame_values &lt;- c(1, 3, 5, 7)\n\nlength_sims &lt;- tibble(\n  p = rep(p_values, times = length(game_values)),\n  games = rep(game_values, each = length(p_values))\n) |&gt;\n  mutate(win_prob = map2_dbl(p, games, win_prob))\n\nggplot(length_sims, aes(x = p, y = win_prob, color = factor(games))) + \n  geom_line() + \n  geom_point() + \n  geom_abline(slope = 1, intercept = 0, linetype = \"dashed\", color = \"gray50\") + \n  labs(title = \"Probability Team A wins the series, by series length\",\n       x = \"Team As single game win probability\",\n       y = \"Probability Team A wins the series\",\n       color = \"Best of (games)\")\n\n\n\n\n\n\n\n\n\nEvery one of the curves passes through right around 0.5. This shows that if teams are evenly matched, both teams have even chances of winning no matter how long the series is. The further away from 0.5, the longer series give the better team a higher chance of winning. However, the effect is smaller then one may expect. A team that has a 55% chance of winning every game only wins the best of 7 series around 60% of the time."
+  },
+  {
+    "objectID": "simulating_playoff_series.html#how-home-field-advantage-matters",
+    "href": "simulating_playoff_series.html#how-home-field-advantage-matters",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "How home-field advantage matters",
+    "text": "How home-field advantage matters\nNext, we will put two evenly matched teams against each other, so any the only difference in p for the two teams will come from home-field advantage. I will vary the advantage from 0 to 0.15 for all the of the different length of the series. I will do this using pmap_dbl(), because there will be three changing inputs.\n\n\nCode\nhfa_values &lt;- seq(0, 0.15, by = 0.015)\n\nhfa_sims &lt;- tibble(\n  p = 0.5,\n  games = rep(game_values, each = length(hfa_values)),\n  hfa = rep(hfa_values, times = length(game_values))\n) |&gt;\n  mutate(win_prob = pmap_dbl(list(p, games, hfa), win_prob))\n\nggplot(hfa_sims, aes(x = hfa, y = win_prob, color = factor(games))) + \n  geom_line() +\n  geom_point() +\n  labs(\n    title = \"Effect of Home-Field Advantage on Evenly Matched Teams\",\n    x = \"Home-field advantage effect on p\",\n    y = \"Probability team with HFA wins\",\n    color = \"Best of (games)\"\n  )\n\n\n\n\n\n\n\n\n\nAs expected, having no hfa effect at all, all 4 different series length are scattered very closely around a 0.5 win probability. As the hfa grows, Team A’s chances rise, but by varying amounts based on the series length. In a best of 1, Team A gets the most benefit because they get the only home game, which is why as the effect grows, their probability soars way higher then the rest of the series, being close to a .1 higher probability then the best of 3, the one the hfa had the second highest effect on. The longer the series, the lower the effect of hfa had on the series outcome. There is a point for the best of 7 series where the hfa increases p by 0.09, where Team A only has a 0.5 chance of winning the series. It is even lower then when the hfa is 0 for the best of 7 series. This all shows that hfa has more effect on short series."
+  },
+  {
+    "objectID": "simulating_playoff_series.html#conclusion",
+    "href": "simulating_playoff_series.html#conclusion",
+    "title": "Project 3: Simulating Playoff Series Length",
+    "section": "Conclusion",
+    "text": "Conclusion\nI wrote a function that simulates a playoff series game by game, and used map_lgl(), map2_dbl(), pmap_dbl() to estimate series win probabilities across different team strengths, series lengths, and effects of home-field advantage. Longer series do slightly favor the better team, while series between closely matched teams are mostly 50/50 at any length. Home-field advantage gives the higher ranked team a large advantage in short series, but only a small advantage in a best of 7. These results suggest that leagues that have longer series usually have the best team win more often, while leagues that have shorter series usually favor a teams ranking and home-field advantage rather then the strength of the team."
   }
 ]
