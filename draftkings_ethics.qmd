@@ -1,0 +1,36 @@
+---
+title: "Draft Kings Data Ethics"
+author: "Cole Parra"
+---
+
+## The Scenario
+
+DraftKings is an online gambling company that runs its' business off of people losing money on sports betting and casino games. It offers promotions like payout boosters, free bets, and bonus money to incentivize people to keep playing and keep losing money. According to a 2026 investigation by New York Times, DraftKings built a machine learning model in 2023 that took customers' betting history to give each person an "elasticity" score predicting how much money a person would lose if they were offered a promotion. The higher score a person had, the more promotions they were offered. The Times also reports that the company shut down another project that was meant to predict whether customers were developing gambling issues. The Electronic Frontier Foundation argues that people who keep betting even though they are losing are the people that this model is targeting the most. The ethical dilemma is that this data could've been used to help protect these people, but instead it's being used to target them.
+
+## Consent and Permission
+
+Informed consent means that people understand how their data will be used when they agree to it. DraftKings users agree to this notice when they sign up or whenever the notice is changed, but the notice is vague and misleading. It says that they may "display interest-based ads" and "deliver customized or personalized content, information, and advertising," but doesn't mention machine learning or AI using their data at all. A customer just reading this would have no way to know that their history was being used to give them a score to try and predict how much money the company can win from you.
+
+## Data Used in Unintended Ways
+
+According to the New York Times, an input to the DraftKings elasticity model was another model's estimate of how likely a customer was to stop gambling. Having knowledge that a user could stop gambling could be used to help the customer, but instead its used in a model to keep promotions going to the customers who are expected to lose more from them. Data that could have predicted gambling problems or whether a gambler was likely to stop ultimately ended up going into predicting how they can get the most money from people.
+
+## Improve Life for Users
+
+The Data Values and Principles manifesto says data teams should use data to improve the lives of their users. DraftKings did the opposite with their model, and used their data to try and get the most money possible from these users with high elasticity scores. The New York times highlights one gambler who lost almost \$70,000, half of it on DraftKings, who received 40 promotions in just two weeks. DraftKings not striving to use data to improve its' user's lives is also shown by the fact that data science helped improve DraftKings promotion sports bets margins by 13% in 2025. This shows that data is being used to improve the company's life, not the users.
+
+## Data Made Publicly Available
+
+DraftKings' customer data and its models, including the one giving them elasticity scores, were kept private. They are only known because the New York Times interviewed more than 40 former DraftKings employees and looked at data not made available to the public. Keeping the data private protects customers from having their betting history exposed. However, keeping this data, the elasticity scores, as well as the concept behind the elasticity scores hidden means that the users would never know they are being targeted, and people not in the company would even know it it taking place.
+
+## Why it matters
+
+This case shows how data science can be used to serve a company at the expense of the people who the data is being used to analyze. DraftKings is the one who benefits the most from this. They earned a reported \$8.7 billion last year from sports and casino betting, and as earlier stated, increased their promotion sports betting margins by 13%. The people harmed in this case are the users of DraftKings, specifically the ones who are given high elasticity scores. These are often people who continue to bet even though they lose money. This puts them and their families at an even higher financial risk. These ethical violations are definitely driven mainly by profit, but are also driven by surveillance and power. DraftKings tracks and uses every single bet that a customer makes, while keeping all of their models and data private. DraftKings has data and models that could be used to identify people who have gambling problems and even help people stop gambling, but instead they use them to just try and gain more profit from their customers.
+
+## **References**
+
+The New York Times. (2026, September 21). How Boston-based DraftKings uses AI to target the gamblers likeliest to lose. *The Boston Globe*. <https://www.bostonglobe.com/2026/09/21/business/draftkings-ai-gamblers/>
+
+Nishar, D. (2026, September 24). DraftKings is using AI to supercharge the harms of online behavioral advertising. *Electronic Frontier Foundation*. <https://www.eff.org/deeplinks/2026/09/draftkings-using-ai-supercharge-harms-online-behavioral-advertising>
+
+DraftKings. (2025, May 21). *Privacy notice*. DraftKings Sportsbook. Retrieved November 25, 2026, from <https://sportsbook.draftkings.com/legal/privacy-notice>
