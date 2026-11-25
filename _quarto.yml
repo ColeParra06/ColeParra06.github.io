@@ -18,8 +18,8 @@ website:
             href: billboard.qmd
           - text: "Simulating Playoff Series"
             href: simulating_playoff_series.qmd
-        - text: "DraftKings Data Ethics"
-          href: draftkings_ethics.qmd
+      - text: "DraftKings Data Ethics"
+        href: draftkings_ethics.qmd
 
 format:
   html:

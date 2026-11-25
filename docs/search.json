@@ -49,18 +49,32 @@
     "text": "Conclusion\nI wrote a function that simulates a playoff series game by game, and used map_lgl(), map2_dbl(), pmap_dbl() to estimate series win probabilities across different team strengths, series lengths, and effects of home-field advantage. Longer series do slightly favor the better team, while series between closely matched teams are mostly 50/50 at any length. Home-field advantage gives the higher ranked team a large advantage in short series, but only a small advantage in a best of 7. These results suggest that leagues that have longer series usually have the best team win more often, while leagues that have shorter series usually favor a teams ranking and home-field advantage rather then the strength of the team."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "billboard.html",
+    "href": "billboard.html",
+    "title": "Billboard Hot 100",
     "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
+    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ColeParra06.github.io",
+    "objectID": "billboard.html#introduction",
+    "href": "billboard.html#introduction",
+    "title": "Billboard Hot 100",
     "section": "",
-    "text": "Hi, I’m Cole Parra! I am a Student-Athlete at Pomona College in Claremont, California. I am very interested in Data Science and how you can apply it in a number of different fields. I love playing and watching sports, playing video games, and spending time with my friends and family. Check out my website to see some of the Data Science projects I’ve been working on!"
+    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
+  },
+  {
+    "objectID": "billboard.html#analysis",
+    "href": "billboard.html#analysis",
+    "title": "Billboard Hot 100",
+    "section": "Analysis",
+    "text": "Analysis\n\n\nCode\nlibrary(tidyverse)\n\nbillboard &lt;- read_csv(\"data/billboard.csv\")\n\n\n\n\nCode\nsongs &lt;- billboard |&gt;\n  filter(weeks_on_chart == 1) |&gt;\n  mutate(\n    year = year(mdy(week_id)),\n    decade = str_c(str_sub(year, 1, 3), \"0s\")\n  )\n\n\n\nHow songs are collaborated on over time\n\n\nCode\nsongs &lt;- songs |&gt;\n  mutate(\n    collaboration = str_detect(performer, \"Featuring|Feat\\\\.|&| x | With |Duet\")\n  )\n\nsongs |&gt;\n  group_by(year) |&gt;\n  summarize(prop_collab = mean(collaboration)) |&gt;\n  ggplot(aes(x = year, y = prop_collab)) + \n  geom_line(linewidth = 0.67) +\n  labs(\n    x = \"Year song first charted\",\n    y = \"Proportion of songs\",\n    title = \"Proportion of Hot 100 songs with multiple artists\"\n  )\n\n\n\n\n\n\n\n\n\nSongs that have been collaborated on, which include songs that have someone featured or have multiple artists credited, have greatly increased since the Billboard Hot 100 was introduced in 1958. There was a little jump up to about 16% of songs in the late 1960s, but else wise the proportion stayed very low until the mid 1990s. Around 1995, the collaboration rate in the Hot 100 started rapidly increasing to where we were in 2021, which is around 37%.\n\n\nSongs that start with “I” vs “You”\n\n\nCode\nsongs |&gt;\n  mutate(first_word = str_extract(song, \"^(I|You)(?=\\\\s|')\")) |&gt;\n  count(decade, first_word) |&gt;\n  group_by(decade) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  filter(!is.na(first_word)) |&gt;\n  mutate(first_word = fct_relevel(first_word, \"I\", \"You\")) |&gt;\n  ggplot(aes(x = decade, y = prop, fill = first_word)) + \n  geom_col(position = \"dodge\") + \n  labs(\n    x = \"Decade song first charted\",\n    y = \"Proportion of songs\",\n    fill = \"Title starts with\",\n    title = \"Proportions of Hot 100 songs that start with I vs You\"\n  )\n\n\n\n\n\n\n\n\n\nThe two most popular ways song titles start is with “I” and “You”. This plot, which includes songs that have an I or You followed by an ’, like I’m and You’re, shows how more songs have started with “I” in every decade throughout history. The difference was highest in the 1960s, where around 7.5% percent of songs started with “I” and only around 2.5% of songs started with “You”. Since the 1990s, the amount of songs on the Hot 100 starting with either word has starkly decreased, with “I” being more than 3 times less common, and “You” being half as common.\n\n\nHow song title length has changed over time\n\n\nCode\nsongs |&gt;\n  mutate(num_words = str_count(song, \"\\\\S+\")) |&gt;\n  group_by(year) |&gt;\n  summarize(avg_words = mean(num_words)) |&gt;\n  ggplot(aes(x = year, y = avg_words)) + \n  geom_line(linewidth = 0.67) + \n  labs(\n    x = \"Year song first charted\",\n    y = \"Average # of words in the title\",\n    title = \"Average # of words in Hot 100 song titles\"\n  )\n\n\n\n\n\n\n\n\n\nThe amount of words per song title in the Hot 100 has decreased severely since 1970. From its’ creation, the average length increases until it reaches around 4.1 words per title in 1970, where it pretty steadily decreases besides a surge up in the late 1990s. After that though, it continues to decrease to where we are today, at less then 2.5 words per title."
+  },
+  {
+    "objectID": "billboard.html#sources",
+    "href": "billboard.html#sources",
+    "title": "Billboard Hot 100",
+    "section": "Sources",
+    "text": "Sources\nData from [TidyTuesday, September 14, 2021](https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-09-14).\nOriginal source: Miller, S. (2021). *Billboard Hot 100 1958-Present*. Data.World. https://data.world/kcmillersean/billboard-hot-100-1958-2017. Data scraped from the weekly Hot 100 charts on Billboard.com."
   },
   {
     "objectID": "chess_ratings.html",
@@ -91,60 +105,18 @@
     "text": "Sources\nData from [TidyTuesday, September 23, 2025](https://github.com/rfordatascience/tidytuesday/blob/main/data/2025/2025-09-23/readme.md), curated by Jessica Moore.\nOriginal source: FIDE (International Chess Federation). (2025). *Standard Rating List, September 2025*. https://ratings.fide.com/download_lists.phtml"
   },
   {
-    "objectID": "billboard.html",
-    "href": "billboard.html",
-    "title": "Billboard Hot 100",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ColeParra06.github.io",
     "section": "",
-    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
+    "text": "Hi, I’m Cole Parra! I am a Student-Athlete at Pomona College in Claremont, California. I am very interested in Data Science and how you can apply it in a number of different fields. I love playing and watching sports, playing video games, and spending time with my friends and family. Check out my website to see some of the Data Science projects I’ve been working on!"
   },
   {
-    "objectID": "billboard.html#introduction",
-    "href": "billboard.html#introduction",
-    "title": "Billboard Hot 100",
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
     "section": "",
-    "text": "The Billboard Hot 100 is the ranking of the 100 most popular songs in the United States at a given week. It has kept track of this every week since 1958. The data will be from a Tidy Tuesday analysis that uses every Hot 100 chart from 1958 to May 2021. My analysis will look into the rate Hot 100 songs have been collaborated on, whether more song titles have started with “I” or “You”, and how the average number of words in song titles has changed over time."
-  },
-  {
-    "objectID": "billboard.html#analysis",
-    "href": "billboard.html#analysis",
-    "title": "Billboard Hot 100",
-    "section": "Analysis",
-    "text": "Analysis\n\n\nCode\nlibrary(tidyverse)\n\nbillboard &lt;- read_csv(\"data/billboard.csv\")\n\n\n\n\nCode\nsongs &lt;- billboard |&gt;\n  filter(weeks_on_chart == 1) |&gt;\n  mutate(\n    year = year(mdy(week_id)),\n    decade = str_c(str_sub(year, 1, 3), \"0s\")\n  )\n\n\n\nHow songs are collaborated on over time\n\n\nCode\nsongs &lt;- songs |&gt;\n  mutate(\n    collaboration = str_detect(performer, \"Featuring|Feat\\\\.|&| x | With |Duet\")\n  )\n\nsongs |&gt;\n  group_by(year) |&gt;\n  summarize(prop_collab = mean(collaboration)) |&gt;\n  ggplot(aes(x = year, y = prop_collab)) + \n  geom_line(linewidth = 0.67) +\n  labs(\n    x = \"Year song first charted\",\n    y = \"Proportion of songs\",\n    title = \"Proportion of Hot 100 songs with multiple artists\"\n  )\n\n\n\n\n\n\n\n\n\nSongs that have been collaborated on, which include songs that have someone featured or have multiple artists credited, have greatly increased since the Billboard Hot 100 was introduced in 1958. There was a little jump up to about 16% of songs in the late 1960s, but else wise the proportion stayed very low until the mid 1990s. Around 1995, the collaboration rate in the Hot 100 started rapidly increasing to where we were in 2021, which is around 37%.\n\n\nSongs that start with “I” vs “You”\n\n\nCode\nsongs |&gt;\n  mutate(first_word = str_extract(song, \"^(I|You)(?=\\\\s|')\")) |&gt;\n  count(decade, first_word) |&gt;\n  group_by(decade) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  filter(!is.na(first_word)) |&gt;\n  mutate(first_word = fct_relevel(first_word, \"I\", \"You\")) |&gt;\n  ggplot(aes(x = decade, y = prop, fill = first_word)) + \n  geom_col(position = \"dodge\") + \n  labs(\n    x = \"Decade song first charted\",\n    y = \"Proportion of songs\",\n    fill = \"Title starts with\",\n    title = \"Proportions of Hot 100 songs that start with I vs You\"\n  )\n\n\n\n\n\n\n\n\n\nThe two most popular ways song titles start is with “I” and “You”. This plot, which includes songs that have an I or You followed by an ’, like I’m and You’re, shows how more songs have started with “I” in every decade throughout history. The difference was highest in the 1960s, where around 7.5% percent of songs started with “I” and only around 2.5% of songs started with “You”. Since the 1990s, the amount of songs on the Hot 100 starting with either word has starkly decreased, with “I” being more than 3 times less common, and “You” being half as common.\n\n\nHow song title length has changed over time\n\n\nCode\nsongs |&gt;\n  mutate(num_words = str_count(song, \"\\\\S+\")) |&gt;\n  group_by(year) |&gt;\n  summarize(avg_words = mean(num_words)) |&gt;\n  ggplot(aes(x = year, y = avg_words)) + \n  geom_line(linewidth = 0.67) + \n  labs(\n    x = \"Year song first charted\",\n    y = \"Average # of words in the title\",\n    title = \"Average # of words in Hot 100 song titles\"\n  )\n\n\n\n\n\n\n\n\n\nThe amount of words per song title in the Hot 100 has decreased severely since 1970. From its’ creation, the average length increases until it reaches around 4.1 words per title in 1970, where it pretty steadily decreases besides a surge up in the late 1990s. After that though, it continues to decrease to where we are today, at less then 2.5 words per title."
-  },
-  {
-    "objectID": "billboard.html#sources",
-    "href": "billboard.html#sources",
-    "title": "Billboard Hot 100",
-    "section": "Sources",
-    "text": "Sources\nData from [TidyTuesday, September 14, 2021](https://github.com/rfordatascience/tidytuesday/tree/master/data/2021/2021-09-14).\nOriginal source: Miller, S. (2021). *Billboard Hot 100 1958-Present*. Data.World. https://data.world/kcmillersean/billboard-hot-100-1958-2017. Data scraped from the weekly Hot 100 charts on Billboard.com."
-  },
-  {
-    "objectID": "ufc_fights.html",
-    "href": "ufc_fights.html",
-    "title": "UFC Fights",
-    "section": "",
-    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
-  },
-  {
-    "objectID": "ufc_fights.html#introduction",
-    "href": "ufc_fights.html#introduction",
-    "title": "UFC Fights",
-    "section": "",
-    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
-  },
-  {
-    "objectID": "ufc_fights.html#analysis",
-    "href": "ufc_fights.html#analysis",
-    "title": "UFC Fights",
-    "section": "Analysis",
-    "text": "Analysis\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nufc_fights &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-07-07/ufc_fights.csv')\n\nRows: 8736 Columns: 15\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (13): fight_url, event_name, location, f1_name, f1_result, f2_name, f2_...\ndbl   (1): round\ndate  (1): date\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\nfinish_by_year &lt;- ufc_fights |&gt;\n  mutate(\n    year = year(date),\n    finish = if_else(str_detect(method, \"KO\"), \"KO/TKO\",\n             if_else(str_detect(method, \"Submission\"), \"Submission\",\n             if_else(str_detect(method, \"Decision\"), \"Decision\",\n                     \"Other\")))\n  ) |&gt;\n  count(year, finish) |&gt;\n  group_by(year) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  ungroup()\n\n\nfinish_by_year |&gt;\n  ggplot(aes(x = year, y = prop, color = finish)) + \n  geom_line(linewidth = 0.67) +\n  geom_point() + \n  labs(\n    x = \"Year\",\n    y = \"Proportion of fights\",\n    color = \"Method\",\n    title = \"Method of UFC fight finishes over time\"\n  )\n\n\n\n\n\n\n\n\nIn the first years of the UFC, decisions were very rare, and most fights ended by a KO/TKO or a submission. In the very initial years submissions were by far the most common method of finish. As the UFC heads into the late 1990s and the 2000s, you can see a clear trend of more and more fights ending in decision. All methods of finishes besides those labeled other fluctuate heavily by year throughout the 2000s, but the overall trend shows an increase in decisions and a decrease in KO/TKOS. Once you reach 2010, the trend of method of finishes become much more stable around the proportions that we have today, which is around half of fights ending in a decision, around 32% ending in a KO or TKO, and around 18% ending in submission. Throughout all years of the UFC fights ending in “other” ways, like disqualifications and no contests have remained incredibly rare, at a rate of around 1%."
-  },
-  {
-    "objectID": "ufc_fights.html#sources",
-    "href": "ufc_fights.html#sources",
-    "title": "UFC Fights",
-    "section": "Sources",
-    "text": "Sources\nData from [TidyTuesday, July 7, 2026](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md), curated by Benjamin Smith.\nOriginal source: Smith, B. *fightr: UFC Fight and Athlete Data* (R package). https://github.com/benyamindsmith/fightr. The package compiles data from [UFCStats](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API."
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
   },
   {
     "objectID": "draftkings_ethics.html",
@@ -201,5 +173,33 @@
     "title": "Draft Kings Data Ethics",
     "section": "References",
     "text": "References\nThe New York Times. (2026, September 21). How Boston-based DraftKings uses AI to target the gamblers likeliest to lose. The Boston Globe. https://www.bostonglobe.com/2026/09/21/business/draftkings-ai-gamblers/\nNishar, D. (2026, September 24). DraftKings is using AI to supercharge the harms of online behavioral advertising. Electronic Frontier Foundation. https://www.eff.org/deeplinks/2026/09/draftkings-using-ai-supercharge-harms-online-behavioral-advertising\nDraftKings. (2025, May 21). Privacy notice. DraftKings Sportsbook. Retrieved November 25, 2026, from https://sportsbook.draftkings.com/legal/privacy-notice"
+  },
+  {
+    "objectID": "ufc_fights.html",
+    "href": "ufc_fights.html",
+    "title": "UFC Fights",
+    "section": "",
+    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
+  },
+  {
+    "objectID": "ufc_fights.html#introduction",
+    "href": "ufc_fights.html#introduction",
+    "title": "UFC Fights",
+    "section": "",
+    "text": "The UFC (Ultimate Fighting Championship) is a mixed martial arts fighting promotion. These fights can end by Knockout or Technical Knockout, submission, a judges’ decision, or some other rare cases. This Tidy Tuesday analysis analyzes the rate of how UFC fights finish over time."
+  },
+  {
+    "objectID": "ufc_fights.html#analysis",
+    "href": "ufc_fights.html#analysis",
+    "title": "UFC Fights",
+    "section": "Analysis",
+    "text": "Analysis\n\nlibrary(tidyverse)\n\n── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──\n✔ dplyr     1.2.1     ✔ readr     2.2.0\n✔ forcats   1.0.1     ✔ stringr   1.6.0\n✔ ggplot2   4.0.3     ✔ tibble    3.3.1\n✔ lubridate 1.9.5     ✔ tidyr     1.3.2\n✔ purrr     1.2.2     \n── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──\n✖ dplyr::filter() masks stats::filter()\n✖ dplyr::lag()    masks stats::lag()\nℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors\n\nufc_fights &lt;- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2026/2026-07-07/ufc_fights.csv')\n\nRows: 8736 Columns: 15\n── Column specification ────────────────────────────────────────────────────────\nDelimiter: \",\"\nchr  (13): fight_url, event_name, location, f1_name, f1_result, f2_name, f2_...\ndbl   (1): round\ndate  (1): date\n\nℹ Use `spec()` to retrieve the full column specification for this data.\nℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.\n\n\n\nfinish_by_year &lt;- ufc_fights |&gt;\n  mutate(\n    year = year(date),\n    finish = if_else(str_detect(method, \"KO\"), \"KO/TKO\",\n             if_else(str_detect(method, \"Submission\"), \"Submission\",\n             if_else(str_detect(method, \"Decision\"), \"Decision\",\n                     \"Other\")))\n  ) |&gt;\n  count(year, finish) |&gt;\n  group_by(year) |&gt;\n  mutate(prop = n / sum(n)) |&gt;\n  ungroup()\n\n\nfinish_by_year |&gt;\n  ggplot(aes(x = year, y = prop, color = finish)) + \n  geom_line(linewidth = 0.67) +\n  geom_point() + \n  labs(\n    x = \"Year\",\n    y = \"Proportion of fights\",\n    color = \"Method\",\n    title = \"Method of UFC fight finishes over time\"\n  )\n\n\n\n\n\n\n\n\nIn the first years of the UFC, decisions were very rare, and most fights ended by a KO/TKO or a submission. In the very initial years submissions were by far the most common method of finish. As the UFC heads into the late 1990s and the 2000s, you can see a clear trend of more and more fights ending in decision. All methods of finishes besides those labeled other fluctuate heavily by year throughout the 2000s, but the overall trend shows an increase in decisions and a decrease in KO/TKOS. Once you reach 2010, the trend of method of finishes become much more stable around the proportions that we have today, which is around half of fights ending in a decision, around 32% ending in a KO or TKO, and around 18% ending in submission. Throughout all years of the UFC fights ending in “other” ways, like disqualifications and no contests have remained incredibly rare, at a rate of around 1%."
+  },
+  {
+    "objectID": "ufc_fights.html#sources",
+    "href": "ufc_fights.html#sources",
+    "title": "UFC Fights",
+    "section": "Sources",
+    "text": "Sources\nData from [TidyTuesday, July 7, 2026](https://github.com/rfordatascience/tidytuesday/blob/main/data/2026/2026-07-07/readme.md), curated by Benjamin Smith.\nOriginal source: Smith, B. *fightr: UFC Fight and Athlete Data* (R package). https://github.com/benyamindsmith/fightr. The package compiles data from [UFCStats](http://ufcstats.com/), UFC athlete profiles, Kaggle, and the Octagon API."
   }
 ]
